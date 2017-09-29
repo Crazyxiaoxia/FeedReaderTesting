@@ -25,11 +25,16 @@ $(function () {
         /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
          */
-        it('url不为空', function () {
-            for (var i = 0; i < allFeeds.length; i++) {
-                expect(allFeeds[i].url).toBeDefined();
-                expect(allFeeds[i].url.length).not.toBe(0);
+         var item;
+        function allFeedsForEach(attr){
+             for (var i = 0; i < allFeeds.length; i++) {
+                expect(allFeeds[i].attr).toBeDefined();
+                expect(allFeeds[i].attr.length).not.toBe(0);
             }
+        }
+
+        it('url不为空', function () {
+             allFeedsForEach("url");
         });
 
 
@@ -37,10 +42,7 @@ $(function () {
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
          */
         it('name不为空', function () {
-            for (var i = 0; i < allFeeds.length; i++) {
-                expect(allFeeds[i].name).toBeDefined();
-                expect(allFeeds[i].name.length).not.toBe(0);
-            }
+            allFeedsForEach("name");
         });
     });
 

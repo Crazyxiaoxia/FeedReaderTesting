@@ -22,28 +22,30 @@ $(function () {
         });
 
 
-        /* TODO:
+          /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
          */
-         var item;
-        function allFeedsForEach(attr){
-             for (var i = 0; i < allFeeds.length; i++) {
-                expect(allFeeds[i].attr).toBeDefined();
-                expect(allFeeds[i].attr.length).not.toBe(0);
-            }
-        }
+         it('URLs are defined',function(){
 
-        it('url不为空', function () {
-             allFeedsForEach("url");
-        });
+            sameDetection("url");
 
+         });
 
         /* TODO:
          * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
          */
-        it('name不为空', function () {
-            allFeedsForEach("name");
-        });
+         it('names are defined',function(){
+
+          sameDetection("name");
+
+         });
+
+         function sameDetection(name){
+           for(var i=0, length = allFeeds.length;i<length;i++){
+            expect(allFeeds[i].name).toBeDefined();
+            expect(allFeeds[i].name.length).not.toBe(0);
+         }
+       }
     });
 
 
@@ -54,8 +56,7 @@ $(function () {
          * 来搞清楚我们是怎么实现隐藏/展示菜单元素的。
          */
         it('菜单元素默认隐藏', function () {
-            var className = $('body').attr("class");
-            expect(className).toBe("menu-hidden");
+           expect($('body').hasClass('menu-hidden')).toBeTruthy();
         });
 
         /* TODO:
@@ -96,22 +97,19 @@ $(function () {
          * 写一个测试保证当用 loadFeed 函数加载一个新源的时候内容会真的改变。
          * 记住，loadFeed() 函数是异步的。
          */
-        var oldFeed, newFeed;
-        beforeEach(function (a) {
-            loadFeed(0, function () {
-                oldFeed = $('.feed').html();
-                a();
-            });
-            loadFeed(1, function () {
-                newFeed = $('.feed').html();
-                a();
-            });
-        });
-        it("loadFeed 函数加载一个新源的时候内容改变", function () {
-            expect(oldFeed !== newFeed).toBeTruthy();
+        var feedOld;
+         jasmine.DEFAULT_TIMEOUT_INTERVAL = 40000;
+         beforeEach(function (done) {
+           loadFeed(0, function () {
+             feedOld = $('.feed').html();
+             loadFeed(1, function () {
+               done();
+             });
+           });
+         });
+         it('loadFeed 函数加载新源的时候内容改变', function () {
+           expect($('.feed').html()).not.toEqual(feedOld);
+         });
+      });
 
-        });
-
-
-    })
 }());
